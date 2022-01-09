@@ -1,0 +1,23 @@
+[
+	{ "isbn" : 8, "titel" : "Atlantis", "autor" : "David Gibbins" },
+	{ "isbn" : 9, "titel" : "Le concile de pierre", "autor" : "Jean-Christophe Grange" },
+	{ "isbn" : 10, "titel" : "Der Herr der Ringe", "autor" : "J. R. R. Tolkien" },
+	{ "isbn" : 11, "titel" : "L'Empire des loups", "autor" : "Jean-Christophe Grange" },
+	{ "isbn" : 12, "titel" : "Silo", "autor" : "Hugh Howey" },
+	{ "isbn" : 13, "titel" : "Oksa Pollock", "autor" : "Anne Plichota" },
+	{ "isbn" : 23, "titel" : "Silo Origin", "autor" : "Hugh Howey" },
+	{ "isbn" : 26, "titel" : "Hunger Games", "autor" : "Suzanne Collins" },
+	{ "isbn" : 43, "titel" : "Silo Generation", "autor" : "Hugh Howey" },
+	{ "isbn" : 55, "titel" : "Dust", "autor" : "Hugh Howey" },
+	{ "isbn" : 56, "titel" : "A la croisee des mondes", "autor" : "Philip Pullman" },
+	{ "isbn" : 65, "titel" : "Dune", "autor" : "Frank Herbert" },
+	{ "isbn" : 66, "titel" : "Amarock", "autor" : "Bernard Clavel" },
+	{ "isbn" : 90, "titel" : "Sand", "autor" : "Hugh Howey" },
+	{ "isbn" : 95, "titel" : "The House of Shattered Wings", "autor" : "Aliette De Bodard" },
+	{ "isbn" : 96, "titel" : "The House of Binding Thorns", "autor" : "Aliette De Bodard" },
+	{ "isbn" : 97, "titel" : "The House of Sundering Flames", "autor" : "Aliette De Bodard" },
+	{ "isbn" : 99, "titel" : "Beacon 23", "autor" : "Hugh Howey" },
+	{ "isbn" : 102, "titel" : "Machine Learning", "autor" : "Hugh Howey" },
+	{ "isbn" : 132, "titel" : "Oksa Pollock 2", "autor" : "Anne Plichota" },
+	{ "isbn" : 133, "titel" : "Oksa Pollock 3", "autor" : "Anne Plichota" }
+]

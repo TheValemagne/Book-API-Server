@@ -1,0 +1,985 @@
+{
+	"info": {
+		"_postman_id": "37e4c001-e5ca-4e3a-8d81-1bf930213881",
+		"name": "RestApi",
+		"description": "Requests fuer den \"Controle continu 2\" mit der Implementierung eines RestAPI in Java.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Buchliste",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Die Antwort muss einen OK Status mit einen Body haben\", function () {\r",
+							"     pm.response.to.be.ok;\r",
+							"     pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Antwort korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).an(\"array\");\r",
+							"        const buch = responseJson.msg[0];\r",
+							"        pm.expect(buch).to.be.an(\"object\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}"
+					]
+				},
+				"description": "Gibt alle Bucher zurueck."
+			},
+			"response": []
+		},
+		{
+			"name": "Buch mit isbn 9",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Die Antwort muss einen OK Status mit einen Body haben\", function () {\r",
+							"     pm.response.to.be.ok;\r",
+							"     pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Antwort korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).to.be.an(\"object\");\r",
+							"        pm.expect(responseJson.msg.isbn).to.eql(9);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}/9",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"9"
+					]
+				},
+				"description": "Gibt die Daten des Buches mit ISBN 9 zurueck."
+			},
+			"response": []
+		},
+		{
+			"name": "Buch existiert nicht",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Die Antwort muss einen Not found Status mit eine Fehlermeldung haben.\", function () {\r",
+							"     pm.response.to.be.notFound;\r",
+							"     pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Fehlermeldung korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).to.eql(\"Kein Buch mit ISBN 1.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}/1",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"1"
+					]
+				},
+				"description": "Gibt den Fehler: das Buch ist nicht vorhanden."
+			},
+			"response": []
+		},
+		{
+			"name": "Buch mit unmoeglischen ISBN",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Die Antwort muss einen Bad Request Status mit eine Fehlermeldung haben.\", function () {\r",
+							"     pm.response.to.be.badRequest;\r",
+							"     pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Fehlermeldung korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).to.eql(\"Die ISBN muss positiv sein.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}/0",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"0"
+					]
+				},
+				"description": "Gibt den Fehler: die ISBN muss positiv sein."
+			},
+			"response": []
+		},
+		{
+			"name": "Buch mit unmoeglischen ISBN negativ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Die Antwort muss einen Bad Request Status mit eine Fehlermeldung haben.\", function () {\r",
+							"     pm.response.to.be.badRequest;\r",
+							"     pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Fehlermeldung korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).to.eql(\"Die ISBN muss positiv sein.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}/-1",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"-1"
+					]
+				},
+				"description": "Gibt den Fehler: die ISBN muss positiv sein."
+			},
+			"response": []
+		},
+		{
+			"name": "Hugh Howey Buchern",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Die Antwort muss einen OK Status mit einen Body haben\", function () {\r",
+							"     pm.response.to.be.ok;\r",
+							"     pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Antwort korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).an(\"array\");\r",
+							"        const buch = responseJson.msg[0];\r",
+							"        pm.expect(buch).to.be.an(\"object\");\r",
+							"        pm.expect(buch.autor).to.eql(\"Hugh Howey\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}/Hugh_Howey",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"Hugh_Howey"
+					]
+				},
+				"description": "Gibt alle Bucher von Hugh Howey zurueck."
+			},
+			"response": []
+		},
+		{
+			"name": "Autor existiert nicht",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Die Antwort muss einen OK Status mit einen Body haben\", function () {\r",
+							"     pm.response.to.be.ok;\r",
+							"     pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Antwort korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).an(\"array\");\r",
+							"        pm.expect(responseJson.msg).to.eql([]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}/Harlan_Coben",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"Harlan_Coben"
+					]
+				},
+				"description": "Gibt eine leere Liste zurueck."
+			},
+			"response": []
+		},
+		{
+			"name": "Keine gueltige URL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Die Antwort muss einen Bad Request Status mit eine Fehlermeldung haben.\", function () {\r",
+							"     pm.response.to.be.badRequest;\r",
+							"     pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Fehlermeldung korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).to.eql(\"Keine gueltige URL.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}/endpoint/1",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"endpoint",
+						"1"
+					]
+				},
+				"description": "Fehlerfall, die URL ist nicht gueltig. Eine gueltige URL waere \"localhost:4711/buchliste/1\"."
+			},
+			"response": []
+		},
+		{
+			"name": "Neuer Buch mit ISBN 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Die Antwort muss einen Created Status mit einen Body und location haben\", function () {\r",
+							"     pm.response.to.have.status(\"Created\");\r",
+							"     pm.response.to.have.header(\"Location\");\r",
+							"     pm.response.to.be.not.withBody;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"isbn\" : 1, \"titel\" : \"test\", \"autor\" : \"m\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}"
+					]
+				},
+				"description": "2 Moeglichkeiten:\n- Das Buch ist nocht nicht vorhanden und liefert eine URL.\n- Das Buch ist schon vorhanden und liefert eine Fehlermeldung."
+			},
+			"response": []
+		},
+		{
+			"name": "Neuer Buch mit ISBN 0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Die ISBN muss positiv sein\", function () {\r",
+							"     pm.response.to.be.badRequest;\r",
+							"     pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Fehlermeldung korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).to.eql(\"Die ISBN muss positiv sein.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"isbn\" : 0, \"titel\" : \"titel\", \"autor\" : \"autor\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}"
+					]
+				},
+				"description": "Die ISBN darf nicht Null oder negativ sein."
+			},
+			"response": []
+		},
+		{
+			"name": "Neuer Buch mit Titel leer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Der Titel darf nicht leer sein\", function () {\r",
+							"     pm.response.to.be.badRequest;\r",
+							"     pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Fehlermeldung korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).to.eql(\"Der Titel darf nicht leer sein.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"isbn\" : 3, \"titel\" : \"\", \"autor\" : \"autor\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}"
+					]
+				},
+				"description": "Der Titel darf nicht leer sein."
+			},
+			"response": []
+		},
+		{
+			"name": "Neuer Buch mit Autor leer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Der Autor darf nicht leer sein\", function () {\r",
+							"     pm.response.to.be.badRequest;\r",
+							"     pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Fehlermeldung korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).to.eql(\"Der Autor darf nicht leer sein.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"isbn\" : 3, \"titel\" : \"titel\", \"autor\" : \"\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}"
+					]
+				},
+				"description": "Der Autor darf nicht leer sein."
+			},
+			"response": []
+		},
+		{
+			"name": "Buch ist schon vorhanden",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Buch ist schon vorhanden\", function () {\r",
+							"     pm.response.to.be.badRequest;\r",
+							"     pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Fehlermeldung korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).to.eql(\"Das Buch mit ISBN 9 ist schon vorhanden.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"isbn\" : 9, \"titel\" : \"test\", \"autor\" : \"m\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}"
+					]
+				},
+				"description": "Das Buch ist schon vorhanden in der Datenbank und liefert eine Fehlermeldung."
+			},
+			"response": []
+		},
+		{
+			"name": "Fehler im JSON",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Fehler in JSON-String\", function () {\r",
+							"     pm.response.to.be.badRequest;\r",
+							"     pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Fehlermeldung korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).to.eql(\"Fehler im JSON-String.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"isbn\" : 2, \"titel\" : \"test\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}"
+					]
+				},
+				"description": "Es fehlt das Attribut \"autor\" und ist somit keine gueltige Darstellung des Buches."
+			},
+			"response": []
+		},
+		{
+			"name": "Update Buch mit ISBN 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Die Antwort muss einen OK Status mit keinen Body haben\", function () {\r",
+							"     pm.response.to.have.status(\"No Content\");\r",
+							"     pm.response.to.be.not.withBody;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"titel\" : \"updated-test\", \"autor\" : \"m\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}/1",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"1"
+					]
+				},
+				"description": "2 Moeglichkeiten:\n- Das Buch ist schon vorhanden, dann wird das Buch geaendert und die Antwort hat keinen Inhalt.\n- Das Buch ist nicht vorhanden und liefert eine Fehlermeldung."
+			},
+			"response": []
+		},
+		{
+			"name": "Update Buch mit Titel leer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Der Titel darf nicht leer sein\", function () {\r",
+							"     pm.response.to.be.badRequest;\r",
+							"     pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Fehlermeldung korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).to.eql(\"Der Titel darf nicht leer sein.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"titel\" : \" \", \"autor\" : \"m\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}/1",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"1"
+					]
+				},
+				"description": "Der Titel darf nicht leer sein."
+			},
+			"response": []
+		},
+		{
+			"name": "Update Buch mit Autor leer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Der Autor darf nicht leer sein\", function () {\r",
+							"     pm.response.to.be.badRequest;\r",
+							"     pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Fehlermeldung korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).to.eql(\"Der Autor darf nicht leer sein.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"titel\" : \"titel\", \"autor\" : \"    \" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}/1",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"1"
+					]
+				},
+				"description": "Der Autor darf nicht leer sein."
+			},
+			"response": []
+		},
+		{
+			"name": "Loeche Buch mit ISBN 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Das buch wurde geloecht\", function () {\r",
+							"     pm.response.to.have.status(\"No Content\");\r",
+							"     pm.response.to.be.not.withBody;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}/1",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"1"
+					]
+				},
+				"description": "2 Moeglichkeiten:\n- Das Buch ist schon vorhanden, dann wird das Buch geloecht.\n- Das Buch ist nicht vorhanden und liefert eine Fehlermeldung."
+			},
+			"response": []
+		},
+		{
+			"name": "Loeche Buch mit ISBN 0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Die Antwort muss einen Bad Request Status mit eine Fehlermeldung haben.\", function () {\r",
+							"     pm.response.to.be.badRequest;\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Fehlermeldung korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).to.eql(\"Die ISBN muss positiv sein.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}/0",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"0"
+					]
+				},
+				"description": "2 Moeglichkeiten:\n- Das Buch ist schon vorhanden, dann wird das Buch geloecht.\n- Das Buch ist nicht vorhanden und liefert eine Fehlermeldung."
+			},
+			"response": []
+		},
+		{
+			"name": "Method not implemented",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Die Methode ist nicht erlaubt\", function () {\r",
+							"     pm.response.to.have.status('Method Not Allowed');\r",
+							"     pm.expect(pm.response.headers.get('Allow')).to.eql('GET, POST, PUT, DELETE');\r",
+							"     pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Fehlermeldung korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).to.eql(\"Die Methode ist nicht implementiert.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "COPY",
+				"header": [],
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}/9",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"9"
+					]
+				},
+				"description": "Die Method COPY ist nicht fuer den Server definiert."
+			},
+			"response": []
+		},
+		{
+			"name": "Method not implemented 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Die Methode ist nicht erlaubt\", function () {\r",
+							"     pm.response.to.have.status('Method Not Allowed');\r",
+							"     pm.expect(pm.response.headers.get('Allow')).to.eql('GET, POST, PUT, DELETE');\r",
+							"     pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Fehlermeldung korrekt\", () => {\r",
+							"        const responseJson = pm.response.json();\r",
+							"        pm.expect(responseJson.msg).to.eql(\"Die Methode ist nicht implementiert.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "OPTIONS",
+				"header": [],
+				"url": {
+					"raw": "localhost:{{port}}/{{context}}",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}"
+					]
+				},
+				"description": "Die Method OPTIONS ist nicht fuer den Server definiert."
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "port",
+			"value": "4711"
+		},
+		{
+			"key": "context",
+			"value": "buchliste"
+		}
+	]
+}
